@@ -96,8 +96,8 @@ POST /create
 
 | Gateway Path   | Service       |
 | -------------- | ------------- |
-| /api/users/**  | User Service  |
-| /api/orders/** | Order Service |
+| /users/**  | User Service  |
+| /orders/** | Order Service |
 
 ---
 
@@ -111,16 +111,16 @@ spring:
         - id: user-service
           uri: http://localhost:8082
           predicates:
-            - Path=/api/users/**
+            - Path=/users/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
 
         - id: order-service
           uri: http://localhost:8081
           predicates:
-            - Path=/api/orders/**
+            - Path=/orders/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=1
 ```
 
 ---
@@ -137,7 +137,7 @@ A GlobalFilter is implemented in the gateway to:
 Example log:
 
 ```
-TraceId=abc123 Incoming Request → POST /api/orders/create
+TraceId=abc123 Incoming Request → POST /orders/order/create
 TraceId=abc123 Response → Status=200 Time=45ms
 ```
 
@@ -234,8 +234,8 @@ mvn spring-boot:run
 ### 3. Test APIs
 
 ```
-POST http://localhost:8080/api/orders/create
-POST http://localhost:8080/api/users/create
+POST http://localhost:8080/orders/order/create
+POST http://localhost:8080/users/user/create?name=Amit
 ```
 
 ---
@@ -285,15 +285,6 @@ traceId: "abc123"
 * Gateway uses WebFlux (reactive)
 * Do not include spring-boot-starter-web
 * Ensure compatible Spring Boot and Spring Cloud versions
-
----
-
-## Future Enhancements
-
-* Service discovery (Eureka)
-* JWT authentication
-* Distributed tracing (Zipkin)
-* Metrics (Prometheus and Grafana)
 
 ---
 
